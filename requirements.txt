@@ -1,0 +1,9 @@
+PyQt5>=5.15
+networkx
+pandas
+numpy
+matplotlib
+python-pptx
+pillow
+pytest
+# gurobipy optional - not included in pypi by default
