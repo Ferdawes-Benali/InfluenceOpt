@@ -6,38 +6,54 @@ from PyQt5.QtWidgets import (QGraphicsView, QGraphicsScene, QGraphicsEllipseItem
                              QLineEdit, QSpinBox, QDoubleSpinBox, QPushButton,
                              QComboBox, QLabel, QToolTip)
 from PyQt5.QtCore import QRectF, Qt, QPointF, pyqtSignal, QTimer
-from PyQt5.QtGui import QColor, QBrush, QPen, QPainter, QFont, QRadialGradient, QLinearGradient
+from PyQt5.QtGui import QColor, QBrush, QPen, QPainter, QFont, QRadialGradient, QLinearGradient, QImage
 import networkx as nx
 import csv
 import math
-from typing import Dict, Optional
+from typing import Dict, Optional, Set
 
 
-# Enhanced color scheme with gradients
 PLATFORM_COLORS = {
-    "IG": QColor(225, 48, 108),   # Instagram gradient pink
-    "TT": QColor(0, 0, 0),         # TikTok black
-    "YT": QColor(255, 0, 0),       # YouTube red
-    "TW": QColor(29, 161, 242),    # Twitter blue
+    "IG": {
+        'base': QColor(225, 48, 108),
+        'light': QColor(255, 78, 138),
+        'dark': QColor(195, 18, 78)
+    },
+    "TT": {
+        'base': QColor(0, 0, 0),
+        'light': QColor(50, 50, 50),
+        'dark': QColor(0, 0, 0)
+    },
+    "YT": {
+        'base': QColor(255, 0, 0),
+        'light': QColor(255, 50, 50),
+        'dark': QColor(200, 0, 0)
+    },
+    "TW": {
+        'base': QColor(29, 161, 242),
+        'light': QColor(59, 191, 255),
+        'dark': QColor(0, 131, 212)
+    },
 }
 
 RISK_COLORS = {
-    QColor(46, 204, 113),   # Low risk - Green
-    QColor(241, 196, 15),   # Medium risk - Yellow
-    QColor(231, 76, 60),    # High risk - Red
-    QColor(192, 57, 43),    # Critical risk - Dark Red
+    'low': QColor(46, 204, 113),      # Green
+    'medium': QColor(241, 196, 15),   # Yellow
+    'high': QColor(231, 76, 60),      # Red
+    'critical': QColor(192, 57, 43),  # Dark Red
 }
+
 
 def get_risk_color(risk_value: float) -> QColor:
     """Get color based on risk level."""
     if risk_value < 0.1:
-        return QColor(46, 204, 113)  # Green
+        return RISK_COLORS['low']
     elif risk_value < 0.2:
-        return QColor(241, 196, 15)  # Yellow
+        return RISK_COLORS['medium']
     elif risk_value < 0.3:
-        return QColor(231, 76, 60)   # Red
+        return RISK_COLORS['high']
     else:
-        return QColor(192, 57, 43)   # Dark Red
+        return RISK_COLORS['critical']
 
 
 class InteractiveNodeItem(QGraphicsEllipseItem):
@@ -353,6 +369,7 @@ class NetworkView(QGraphicsView):
     def _layout_and_draw(self) -> None:
         """Enhanced layout with better colors and sizes."""
         self.scene().clear()
+        self.node_items.clear()
         if len(self.graph) == 0:
             return
         
@@ -380,7 +397,6 @@ class NetworkView(QGraphicsView):
             )
         
         # Draw nodes with better sizing and coloring
-        import math
         for n, p in pos.items():
             attrs = self.graph.nodes[n]
             
@@ -390,28 +406,16 @@ class NetworkView(QGraphicsView):
             
             # Platform color
             platform = attrs.get('platform', 'IG')
-            color = PLATFORM_COLORS.get(platform, PLATFORM_COLORS['IG'])
+            color_dict = PLATFORM_COLORS.get(platform, PLATFORM_COLORS['IG'])
+            color = color_dict['base']
             
             # Risk-based border
             risk = attrs.get('risk', 0.0)
             risk_color = get_risk_color(risk)
             
-            # Create node
+            # Create node using InteractiveNodeItem
             rect = QRectF(p[0] * scale - size/2, p[1] * scale - size/2, size, size)
-            item = QGraphicsEllipseItem(rect)
-            item.setBrush(QBrush(color))
-            item.setPen(QPen(risk_color, 2))
-            
-            # Make nodes interactive
-            item.setFlag(QGraphicsEllipseItem.ItemIsMovable, True)
-            item.setFlag(QGraphicsEllipseItem.ItemIsSelectable, True)
-            item.setToolTip(
-                f"<b>{attrs.get('name', n)}</b><br>"
-                f"Platform: {platform}<br>"
-                f"Followers: {followers:,}<br>"
-                f"Cost: ${attrs.get('cost', 0):,.2f}<br>"
-                f"Risk: {risk*100:.1f}%"
-            )
+            item = InteractiveNodeItem(n, self.graph, rect)
             
             self.scene().addItem(item)
             self.node_items[n] = item
@@ -424,18 +428,18 @@ class NetworkView(QGraphicsView):
         
         self.fitInView(self.scene().itemsBoundingRect(), Qt.KeepAspectRatio)
 
-        def highlight_selection(self, selected_ids: set, reached_ids: Optional[set] = None):
-            """Highlight selected influencers and reached followers."""
-            for n, item in self.node_items.items():
-                item.is_selected_influencer = n in selected_ids
-                item.is_reached = reached_ids and n in reached_ids
-                item._update_appearance()
-            
-            # Start animation for reach propagation
-            if reached_ids:
-                self._animation_step = 0
-                self._animation_timer.start(100)
+    def highlight_selection(self, selected_ids: Set[str], reached_ids: Optional[Set[str]] = None):
+        """Highlight selected influencers and reached followers."""
+        for n, item in self.node_items.items():
+            item.is_selected_influencer = n in selected_ids
+            item.is_reached = reached_ids and n in reached_ids
+            item._update_appearance()
         
+        # Start animation for reach propagation
+        if reached_ids:
+            self._animation_step = 0
+            self._animation_timer.start(100)
+    
     def _animate_reach(self):
         """Animate the reach propagation effect."""
         self._animation_step += 1
@@ -445,7 +449,6 @@ class NetworkView(QGraphicsView):
     def grab_screenshot(self, path: str):
         """Save screenshot of current view."""
         rect = self.scene().itemsBoundingRect()
-        from PyQt5.QtGui import QImage, QPainter
         img = QImage(rect.size().toSize(), QImage.Format_ARGB32)
         img.fill(Qt.white)
         painter = QPainter(img)

@@ -3,23 +3,25 @@ from PyQt5.QtWidgets import (QMainWindow, QWidget, QVBoxLayout, QPushButton,
                              QFileDialog, QAction, QTabWidget, QToolBar, 
                              QStatusBar, QLabel, QMessageBox, QComboBox,
                              QActionGroup, QHBoxLayout, QSplitter)
-from PyQt5.QtCore import Qt, QTimer, QSettings
+from PyQt5.QtCore import Qt, QTimer, QSettings, QSize
 from PyQt5.QtGui import QIcon, QBrush, QPen, QFont, QColor, QKeySequence
 from typing import Optional
 import os
 
 
-class MainWindow(QMainWindow):
+class MainWindow (QMainWindow):
     """Enhanced main window with modern UI and improved workflow."""
     
     def __init__(self):
         super().__init__()
+        self.dark_mode = True 
         self._create_statusbar()
+        self._apply_modern_theme()
         self.setWindowTitle("InfluenceOpt - Influencer Campaign Optimizer")
         self.resize(1400, 900)
-        self._apply_modern_theme()
+        #self._apply_modern_theme()
         # Apply modern theme
-        #self._apply_theme()
+        self._apply_theme()
         
         # Initialize UI
         self._init_ui()
@@ -438,7 +440,7 @@ class MainWindow(QMainWindow):
         """Create toolbar with quick actions."""
         toolbar = QToolBar("Main Toolbar")
         toolbar.setMovable(False)
-        toolbar.setIconSize(Qt.ToolBarIconArea)
+        toolbar.setIconSize(QSize(32, 32))
         self.addToolBar(toolbar)
         
         # Quick actions
@@ -485,14 +487,17 @@ class MainWindow(QMainWindow):
         
         # Main status message
         self.status_msg = QLabel("Ready")
+        self.status_label = QLabel("Ready")  # Add this line - was missing!
         statusbar.addWidget(self.status_msg)
         
         # Node count
         self.node_count = QLabel("Nodes: 0")
+        self.node_count_label = QLabel("Nodes: 0")  # Add this for compatibility
         statusbar.addPermanentWidget(self.node_count)
         
         # Edge count  
         self.edge_count = QLabel("Edges: 0")
+        self.edge_count_label = QLabel("Edges: 0")  # Add this for compatibility
         statusbar.addPermanentWidget(self.edge_count)
         
         # Style it
