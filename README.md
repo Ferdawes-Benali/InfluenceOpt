@@ -1,4 +1,4 @@
-# InfluenceOpt 🚀
+# InfluenceOpt 
 
 **Advanced Influencer Campaign Optimization Platform**
 
