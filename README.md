@@ -4,16 +4,16 @@
 
 InfluenceOpt is a desktop application that helps brand managers identify the optimal set of influencers to maximize campaign reach while respecting budget, risk, and quality constraints. Built on advanced operations research techniques (Mixed-Integer Linear Programming), it provides an intuitive interface for complex marketing optimization problems.
 
-![InfluenceOpt Screenshot](docs/screenshot.png)
+![InfluenceOpt Screenshot](plateform.jpg)
 
-## ✨ Key Features
+##   Key Features
 
-### 🎯 Intelligent Optimization
+###  Intelligent Optimization
 - **Mixed-Integer Programming**: Leverages Gurobi (or greedy fallback) to solve complex constrained optimization problems
 - **Multi-Objective Optimization**: Balance cost minimization with reach maximization
 - **Real-time Validation**: Constraint validation with visual feedback as you adjust parameters
 
-### 📊 Interactive Network Visualization
+###  Interactive Network Visualization
 - **Platform-Coded Nodes**: Visual distinction between Instagram, TikTok, YouTube, and Twitter
 - **Risk Indicators**: Color-coded borders showing influencer risk levels
 - **Hover Tooltips**: Detailed metrics on followers, cost, engagement, and fake percentage
@@ -21,7 +21,7 @@ InfluenceOpt is a desktop application that helps brand managers identify the opt
 - **Zoom & Pan**: Smooth navigation through large networks
 - **Multiple Layout Algorithms**: Spring, circular, Kamada-Kawai, and community detection
 
-### 🎛️ Comprehensive Constraint Management
+###  Comprehensive Constraint Management
 - **Budget Control**: Set maximum campaign spend with real-time tracking
 - **Risk Management**: Filter by risk level with topic-specific thresholds
 - **Coverage Targets**: Ensure minimum audience reach percentage
@@ -29,19 +29,19 @@ InfluenceOpt is a desktop application that helps brand managers identify the opt
 - **Quality Filters**: Exclude high-fake influencers automatically
 - **Demographics**: Target specific age groups, regions, and genders
 
-### 📈 Advanced Analytics
+###  Advanced Analytics
 - **Monte Carlo Robustness**: 100-trial simulations testing edge probability variations
 - **ROI Estimation**: Calculate monetary return based on conversion values
 - **Reach Propagation**: Visualize cascading effects through follower networks
 - **Scenario Comparison**: Radar charts comparing multiple campaign strategies
 
-### 💾 Session & Scenario Management
+###  Session & Scenario Management
 - **Named Sessions**: Save and reload complete campaign configurations
 - **Auto-save**: Versioned auto-save every 30 seconds (keeps last 10 versions)
 - **Scenario Library**: Save multiple optimization results for comparison
 - **Export Options**: CSV lists, PowerPoint briefs with screenshots
 
-### 🎨 Modern UI/UX
+###  Modern UI/UX
 - **Dark/Light Themes**: Toggle between professional dark mode and clean light mode
 - **Visual Status Indicators**: Real-time status lights for constraints
 - **Metric Dashboard**: Large, clear displays for cost, reach, and ROI
@@ -50,7 +50,7 @@ InfluenceOpt is a desktop application that helps brand managers identify the opt
 
 ---
 
-## 🚀 Quick Start
+##  Quick Start
 
 ### Prerequisites
 - Python 3.8 or higher
@@ -86,16 +86,16 @@ python main.py
 
 ### First Steps
 
-1. **Load Demo Dataset**: Click "📁 Load Demo" in the toolbar
+1. **Load Demo Dataset**: Click "Load Demo" in the toolbar
 2. **Explore the Network**: Use mouse wheel to zoom, drag to pan
 3. **Set Constraints**: Adjust budget, risk, and coverage in left panel
-4. **Optimize**: Click "🚀 Optimize" to find best influencer set
+4. **Optimize**: Click "Optimize" to find best influencer set
 5. **Review Results**: Check highlighted influencers and metrics
-6. **Save Scenario**: Click "💾 Save Scenario" to preserve this configuration
+6. **Save Scenario**: Click "Save Scenario" to preserve this configuration
 
 ---
 
-## 📖 User Guide
+##  User Guide
 
 ### Network View
 
@@ -185,8 +185,8 @@ Where:
 
 **Saving Scenarios**:
 1. Run optimization with desired constraints
-2. Click "💾 Save Scenario" in toolbar
-3. Scenarios appear in "📊 Scenarios" tab
+2. Click "Save Scenario" in toolbar
+3. Scenarios appear in "Scenarios" tab
 
 **Comparing Scenarios**:
 1. Select 2-5 scenarios in the table
@@ -211,7 +211,7 @@ Where:
 
 ---
 
-## ⌨️ Keyboard Shortcuts
+##  Keyboard Shortcuts
 
 | Shortcut | Action |
 |----------|--------|
@@ -225,7 +225,7 @@ Where:
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 InfluenceOpt/
@@ -264,43 +264,7 @@ InfluenceOpt/
 
 ---
 
-## 🧪 Testing
-
-Run the test suite:
-
-```bash
-# All tests
-pytest
-
-# Specific test file
-pytest tests/test_optimizer.py
-
-# With coverage
-pytest --cov=core --cov=gui
-```
-
----
-
-## 📦 Building Executable
-
-Create standalone EXE for distribution:
-
-```bash
-# Install PyInstaller
-pip install pyinstaller
-
-# Single file (slower startup)
-pyinstaller --onefile --windowed --name InfluenceOpt main.py
-
-# Single folder (faster, recommended)
-pyinstaller --onedir --windowed --name InfluenceOpt main.py
-```
-
-Executable will be in `dist/` directory.
-
----
-
-## 🔧 Configuration
+##  Configuration
 
 ### Data Format
 
@@ -329,75 +293,4 @@ Without Gurobi, the app uses a greedy heuristic solver.
 
 ---
 
-## 🤝 Contributing
-
-Contributions welcome! Please:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-### Code Style
-- Follow PEP 8
-- Add type hints
-- Include docstrings
-- Write unit tests for new features
-
----
-
-## 📄 License
-
-MIT License - see LICENSE file for details
-
----
-
-## 🙏 Acknowledgments
-
-- **NetworkX**: Graph data structures and algorithms
-- **PyQt5**: Cross-platform GUI framework
-- **Gurobi**: World-class optimization solver
-- **Matplotlib**: Visualization and radar charts
-
----
-
-## 📞 Support
-
-- **Issues**: https://github.com/yourusername/influenceopt/issues
-- **Documentation**: https://influenceopt.readthedocs.io
-- **Email**: support@influenceopt.com
-
----
-
-## 🗺️ Roadmap
-
-### Version 1.1 (Planned)
-- [ ] Multi-threaded optimization for large networks
-- [ ] Advanced demographic targeting (interests, behaviors)
-- [ ] Historical campaign data import
-- [ ] A/B testing simulator
-- [ ] Excel data import/export
-
-### Version 1.2 (Future)
-- [ ] Machine learning engagement prediction
-- [ ] Real-time social media API integration
-- [ ] Collaborative multi-user sessions
-- [ ] Mobile companion app
-- [ ] Cloud sync for sessions
-
----
-
-## 📊 Performance
-
-**Benchmark Results** (on i7-8750H, 16GB RAM):
-
-| Network Size | Nodes | Edges | Solve Time (Gurobi) | Solve Time (Greedy) |
-|--------------|-------|-------|---------------------|----------------------|
-| Small        | 20    | 30    | 0.5s                | 0.01s                |
-| Medium       | 100   | 200   | 8s                  | 0.05s                |
-| Large        | 500   | 1000  | 45s                 | 0.2s                 |
-
----
-
-**Happy Optimizing! 🎯**
+**Author: Ferdawes Benali**
